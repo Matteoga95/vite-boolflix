@@ -7,9 +7,7 @@ export default {
 
 <template>
     <footer>
-        <div class="container">
-            <p>Copyright </p>
-        </div>
+
     </footer>
 </template>
 
