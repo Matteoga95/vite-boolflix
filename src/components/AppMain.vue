@@ -13,14 +13,22 @@ export default {
         }
     },
     methods: {
-        callApi(url) {
+        callApi(url, isMovie) {
 
             axios
                 .get(url)
                 .then(response => {
-                    //console.log(response.data);
-                    this.state.movies = response.data.results
-                    console.log(response.data);
+
+                    if (isMovie == true) {
+                        this.state.movies = response.data.results
+                        console.log(response.data.results);
+
+                    } else {
+                        this.state.series = response.data.results
+                        console.log(response.data.results);
+
+                    }
+
                 })
                 .catch(err => {
                     console.error(err.message);
@@ -28,16 +36,27 @@ export default {
                 })
         },
         Search() {
-            let url = this.state.API_url;
-            console.log(this.state.queryInput);
 
-            //se l'input di cerca non è vuoto procedo con la chiamata api
+            //faccio le chimate api tra i film e serie
+            let urlMovie = this.state.API_url_movies;
+            let urlSeries = this.state.API_url_series;
+
+            // console.log(this.state.queryInput);
+
+            //se l'input di cerca non è vuoto procedo con le chiamata api
             if (this.state.queryInput !== '') {
 
-                url += this.state.queryInput
-                console.log(url);
+                urlMovie += this.state.queryInput
+                urlSeries += this.state.queryInput
 
-                this.callApi(url)
+                // console.log(urlMovie);
+                // console.log(urlSeries);
+
+                //chiamata film
+                this.callApi(urlMovie, true)
+
+                //chiamata serie
+                this.callApi(urlSeries, false)
             } else {
                 console.log("la string ainput non è stata valorizzata");
             }
@@ -59,10 +78,10 @@ export default {
         </div>
 
         <div>
-            <div class="my-5 row row-cols-1 row-cols-md-5 g-4">
+            <div class="cards my-5 row row-cols-1 row-cols-md-5 g-4">
 
                 <movieCard v-for=" movie in state.movies" :movie="movie" />
-
+                <movieCard v-for=" serie in state.series" :serie="serie" />
             </div>
         </div>
 
@@ -73,6 +92,11 @@ export default {
 <style lang="scss" scoped>
 input {
     width: 300px;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
 }
 
 button {
