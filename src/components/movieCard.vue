@@ -16,31 +16,6 @@ export default {
             voto: null
         }
     },
-    methods: {
-        callApiFlag() {
-
-            let url = "https://countryflagsapi.com/png/"
-
-            if (this.language == "en") {
-                url += "gb"
-            } else {
-                url += this.language
-            }
-            // console.log(url);
-            axios
-                .get(url)
-                .then(response => {
-                    //console.log(response.data);
-                    // this.state.movies = response.data.results
-                    // console.log(response.data);
-                    this.image = "data:image/png;base64, " + response.data
-                })
-                .catch(err => {
-                    // console.error(err.message);
-                    // this.state.errorMessage = err.message
-                })
-        }
-    },
     mounted() {
 
 
@@ -62,9 +37,14 @@ export default {
             this.language = this.movie.original_language
         }
 
-        //la chiamata per la bandiera
-        this.callApiFlag()
+        if (this.language == "en") {
+            this.image = "https://countryflagsapi.com/svg/gb"
+        } else if (this.language == "ja") {
+            this.image = "https://countryflagsapi.com/svg/jp"
+        } else {
 
+            this.image = "https://countryflagsapi.com/svg/" + this.language
+        }
     }
 
 }
@@ -77,7 +57,7 @@ export default {
 
                 <h5>{{ this.titolo }}</h5>
                 <h5>{{ this.titoloOriginale }}</h5>
-                <img :src="image" alt="">
+                <img class="img-fluid w-25" :src="image" alt="">
 
 
                 <div class="voto">{{ this.voto }}</div>
