@@ -13,6 +13,7 @@ export default {
             image: null,
             titolo: "",
             titoloOriginale: "",
+            poster_path: "https://image.tmdb.org/t/p/w185",
             voto: null
         }
     },
@@ -28,6 +29,7 @@ export default {
             this.titoloOriginale = this.serie.original_name
             this.voto = this.serie.vote_average
             this.language = this.serie.original_language
+            this.poster_path += this.serie.poster_path
 
         } else {
             //in questo caso è un film
@@ -35,6 +37,7 @@ export default {
             this.titoloOriginale = this.movie.original_title
             this.voto = this.movie.vote_average
             this.language = this.movie.original_language
+            this.poster_path += this.movie.poster_path
         }
 
         if (this.language == "en") {
@@ -45,6 +48,11 @@ export default {
 
             this.image = "https://countryflagsapi.com/svg/" + this.language
         }
+
+        //normalizzo il voto
+        this.voto = Math.floor((this.voto / 2) + 1)
+
+
     }
 
 }
@@ -55,12 +63,16 @@ export default {
         <div class="movie card rounded-0 bg-dark text-white h-100 p-2">
             <div class="card-body text-center">
 
+                <img :src="poster_path" alt="">
                 <h5>{{ this.titolo }}</h5>
                 <h5>{{ this.titoloOriginale }}</h5>
-                <img class="img-fluid w-25" :src="image" alt="">
+                <img class="py-1 img-fluid w-25" :src="image" alt="">
 
+                <!-- //metto al posto del voto le stelline di fontawsome -->
+                <div class="py-4">
+                    <i v-for="voti in voto" class=" px-1 fa-solid fa-star"></i>
+                </div>
 
-                <div class="voto">{{ this.voto }}</div>
             </div>
         </div>
 
